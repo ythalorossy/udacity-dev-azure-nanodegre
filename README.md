@@ -1,1 +1,0 @@
-# udacity-dev-azure-nanodegre
