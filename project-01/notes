@@ -36,4 +36,5 @@ Secret Key: (Value) : W54K_-RJpZhy1ebV1DBJNase_~4Ci2S779
 Redirect URL: https://localhost:5555/getAToken
 logout: https://localhost:5555/login
 
-168.61.83.121
+App DSN alias:
+yross.northeurope.cloudapp.azure.com
