@@ -1,3 +1,4 @@
+
 """
 The flask application package.
 """
@@ -12,9 +13,9 @@ app = Flask(__name__)
 app.config.from_object(Config)
 
 # Add any logging levels and handlers with app.logger
-app.logger.setLevel(logging.WARNING)
+app.logger.setLevel(logging.DEBUG)
 streamHandler = logging.StreamHandler()
-streamHandler.setLevel(logging.WARNING)
+streamHandler.setLevel(logging.DEBUG)
 app.logger.addHandler(streamHandler)
 
 Session(app)
