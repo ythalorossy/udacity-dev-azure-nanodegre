@@ -1,0 +1,23 @@
+export RESOURCE_GROUP_NAME=yross-resource-group
+export LOCATION=northeurope
+
+export STORAGE_ACCOUNT=yross01
+
+export PLAN_NAME=yross-plan
+export APP_NAME=yross-app
+export OS_TYPE=Linux
+export RUNTIME=python
+
+#Create resource group
+az group create --name $RESOURCE_GROUP_NAME --location $LOCATION
+
+az login
+
+az functionapp create \
+  --resource-group $RESOURCE_GROUP_NAME \
+  --plan $PLAN_NAME \
+  --name $APP_NAME \
+  --storage-account $STORAGE_ACCOUNT \
+  --os-type  $OS_TYPE\
+  --consumption-plan-location $LOCATION \
+  --runtime $RUNTIME
