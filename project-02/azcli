@@ -6,18 +6,22 @@ export STORAGE_ACCOUNT=yross01
 export PLAN_NAME=yross-plan
 export APP_NAME=yross-app
 export OS_TYPE=Linux
-export RUNTIME=python
+export RUNTIME_PYTHON=python
 
 #Create resource group
 az group create --name $RESOURCE_GROUP_NAME --location $LOCATION
 
 az login
 
+### Create Function APP
+Python requires Linux OS
+
 az functionapp create \
+  --functions-version 2 \
   --resource-group $RESOURCE_GROUP_NAME \
-  --plan $PLAN_NAME \
   --name $APP_NAME \
   --storage-account $STORAGE_ACCOUNT \
   --os-type  $OS_TYPE\
   --consumption-plan-location $LOCATION \
-  --runtime $RUNTIME
+  --runtime $RUNTIME_PYTHON
+
