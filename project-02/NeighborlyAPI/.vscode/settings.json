@@ -1,0 +1,8 @@
+{
+    "azureFunctions.deploySubpath": ".",
+    "azureFunctions.scmDoBuildDuringDeployment": true,
+    "azureFunctions.pythonVenv": "NeighborlyAPI-RX03ZWa0",
+    "azureFunctions.projectLanguage": "Python",
+    "azureFunctions.projectRuntime": "~3",
+    "debug.internalConsoleOptions": "neverOpen"
+}

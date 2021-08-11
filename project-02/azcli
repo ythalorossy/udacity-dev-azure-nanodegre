@@ -1,17 +1,20 @@
 export AZURE_SUBSCRIPTION=Pay-As-You-Go
 export LOCATION=northeurope
 export RESOURCE_GROUP=yross-resource-group
-
 export STORAGE_ACCOUNT=yross01
-
 export PLAN=yross-plan
+
 export APP_NAME=yross-app
 export OS_TYPE=Linux
 export RUNTIME_PYTHON=python
 
 export COSMOSDB_ACCOUNT=yross-cosmosdb
 export MONGODB=yross_mongodb
+export MONGODB_SERVER_VERSION='4.0'
 export MONGODB_COLLECTION=yross-collection
+export MONGODB_ADVERTISEMENTS_COLLECTION=advertisements
+export MONGODB_POSTS_COLLECTION=posts
+
 
 az login
 
@@ -43,7 +46,13 @@ az cosmosdb create \
   --subscription $AZURE_SUBSCRIPTION \
   --locations regionName=$LOCATION failoverPriority=0 isZoneRedundant=False
 
-  --enable-free-tier true 
+az cosmosdb create \
+  --name $COSMOSDB_ACCOUNT \
+  --resource-group $RESOURCE_GROUP \
+  --kind MongoDB \
+  --server-version $MONGODB_SERVER_VERSION \
+  --subscription $AZURE_SUBSCRIPTION 
+
 
 # Get your CosmosDB key and save as a variable
 export COSMOSDB_KEY=$(az cosmosdb keys list --name $COSMOSDB_ACCOUNT --resource-group $RESOURCE_GROUP --output tsv |awk '{print $1}')
@@ -62,6 +71,80 @@ az cosmosdb mongodb collection create \
     --name $COSMOSDB_ACCOUNT \
     --partition-key-path /name \
     --throughput 400
+
+
+# Create collections
+
+printf ' 
+[ 
+  {
+      "key": {"keys": ["_id"]}
+  }
+]' > idxpolicy-yross.json
+
+
+az cosmosdb mongodb collection create \
+  -a $COSMOSDB_ACCOUNT \
+  -g $RESOURCE_GROUP \
+  -d $MONGODB \
+  -n $MONGODB_COLLECTION \
+  --shard 'id' \
+  --throughput 400 \
+  --idx @idxpolicy-yross.json
+
+
+
+
+
+-----------
+# Import dataset into MongoDB
+
+mongo \
+  --host yross01.mongo.cosmos.azure.com \
+  --port 10255 --username yross01 \
+  --password 8LirF4a7riXqxdwUFrEhrKOlU5WLbznhqU7z71Q5jyyx35DwEFx31adV98NZ3LCi3PTEA5ew6LP1eWlrqSg6iw== 
+
+mongo \
+  --host yross01.mongo.cosmos.azure.com \
+  --port 10255 --username yross01 \
+  --password 8LirF4a7riXqxdwUFrEhrKOlU5WLbznhqU7z71Q5jyyx35DwEFx31adV98NZ3LCi3PTEA5ew6LP1eWlrqSg6iw== \
+  --ssl
+
+
+mongoimport \
+  --host yross01.mongo.cosmos.azure.com \
+  --port 10255 \
+  --username yross01 \
+  --password 8LirF4a7riXqxdwUFrEhrKOlU5WLbznhqU7z71Q5jyyx35DwEFx31adV98NZ3LCi3PTEA5ew6LP1eWlrqSg6iw== \
+  --jsonArray \
+  --file ./sample_data/sampleAds.json \
+  --db yross_mongodb \
+  --collection advertisements \
+  --ssl
+
+mongoimport \
+  --host yross01.mongo.cosmos.azure.com \
+  --port 10255 \
+  --username yross01 \
+  --password 8LirF4a7riXqxdwUFrEhrKOlU5WLbznhqU7z71Q5jyyx35DwEFx31adV98NZ3LCi3PTEA5ew6LP1eWlrqSg6iw== \
+  --jsonArray \
+  --file ./sample_data/samplePosts.json \
+  --db yross_mongodb \
+  --collection posts \
+  --ssl
+
+
+-----------------
+# Deploy the frontend app
+
+python3 -m venv venv
+source /venv/bin/activate
+pip install -r requirements.txt
+
+export FLASK_RUN=app.py
+export FLASK_ENV=development
+flask run
+
 
 
 ----------------

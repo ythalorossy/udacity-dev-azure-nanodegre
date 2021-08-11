@@ -1,5 +1,6 @@
 import azure.functions as func
 import pymongo
+from settings import MONGODB_CONNECTION_STRING, MONGODB_NAME, AD_COLLECTION
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
 
@@ -7,10 +8,10 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
     if request:
         try:
-            url = "localhost"  # TODO: Update with appropriate MongoDB connection information
+            url = MONGODB_CONNECTION_STRING
             client = pymongo.MongoClient(url)
-            database = client['azure']
-            collection = database['advertisements']
+            database = client[MONGODB_NAME]
+            collection = database[AD_COLLECTION]
 
             rec_id1 = collection.insert_one(eval(request))
 

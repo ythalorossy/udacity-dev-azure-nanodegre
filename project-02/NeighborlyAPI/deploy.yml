@@ -1,0 +1,9 @@
+data:
+  AzureWebJobsStorage: VXNlRGV2ZWxvcG1lbnRTdG9yYWdlPXRydWU=
+  FUNCTIONS_WORKER_RUNTIME: cHl0aG9u
+apiVersion: v1
+kind: Secret
+metadata:
+  name: yross-app
+---
+

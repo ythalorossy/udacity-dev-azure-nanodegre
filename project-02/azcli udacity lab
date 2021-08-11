@@ -1,0 +1,423 @@
+export AZURE_SUBSCRIPTION=7e05aad2-f078-4380-a081-53792f5d6836
+export LOCATION=westus
+export RESOURCE_GROUP=cloud-demo-154300
+
+export STORAGE_ACCOUNT=yross01
+export PLAN=yross-plan
+
+export APP_NAME=yross-app
+export OS_TYPE=Linux
+export RUNTIME_PYTHON=python
+
+export COSMOSDB_ACCOUNT=yross-cosmosdb
+export MONGODB=yross_mongodb
+export MONGODB_SERVER_VERSION='4.0'
+export MONGODB_COLLECTION=yross-collection
+export MONGODB_ADVERTISEMENTS_COLLECTION=advertisements
+export MONGODB_POSTS_COLLECTION=posts
+
+export WEB_APP_NAME=yross-web-app
+
+export APP_REGISTRY=yrossregistry
+export APP_IMAGE_NAME=yross-image
+
+export K8S_CLUSTER_NAME=yross-k8s-cluster
+export K8s_DEPLOY_NAME=yross-k8s-deploy
+
+az login
+
+----------------------------
+# Create a resource group
+
+az group create \
+  --name $RESOURCE_GROUP \
+  --location $LOCATION
+
+----------------------------
+# Create a storage account
+
+az storage account create \
+  --name $STORAGE_ACCOUNT \
+  --location $LOCATION \
+  --resource-group $RESOURCE_GROUP \
+  --sku Standard_LRS
+
+----------------------------
+# Create Function APP
+Python requires Linux OS
+
+az functionapp create \
+  --functions-version 3 \
+  --resource-group $RESOURCE_GROUP \
+  --name $APP_NAME \
+  --storage-account $STORAGE_ACCOUNT \
+  --os-type  $OS_TYPE\
+  --consumption-plan-location $LOCATION \
+  --runtime $RUNTIME_PYTHON
+
+# Update project to run the functions locally
+
+https://www.eliostruyf.com/set-up-azure-storage-for-local-develop-of-timer-or-queue-triggered-azure-functions/
+
+func settings add AzureWebJobsStorage UseDevelopmentStorage=true 
+or 
+add "AzureWebJobsStorage": "UseDevelopmentStorage=true" to local.settings.json
+
+------------------
+# Run the Function App locally
+
+install dependencies
+pipenv install
+
+activate python virtual environment
+pipenv shell
+
+start the function app
+func start
+
+
+------------------
+# Deploy Function App to Azure
+func azure functionapp publish $APP_NAME
+
+
+Functions in yross-app:
+    createAdvertisement - [httpTrigger]
+        Invoke url: https://yross-app.azurewebsites.net/api/createadvertisement
+
+    deleteAdvertisement - [httpTrigger]
+        Invoke url: https://yross-app.azurewebsites.net/api/deleteadvertisement
+
+    getAdvertisement - [httpTrigger]
+        Invoke url: https://yross-app.azurewebsites.net/api/getadvertisement
+
+    getAdvertisements - [httpTrigger]
+        Invoke url: https://yross-app.azurewebsites.net/api/getadvertisements
+
+    getPost - [httpTrigger]
+        Invoke url: https://yross-app.azurewebsites.net/api/getpost
+
+    getPosts - [httpTrigger]
+        Invoke url: https://yross-app.azurewebsites.net/api/getposts
+
+    updateAdvertisement - [httpTrigger]
+        Invoke url: https://yross-app.azurewebsites.net/api/updateadvertisement
+
+
+!!! Sometimes after the deployment of the functoin the `pymongo` fail.
+Update the requirements.txt with the pymongo version
+
+pymongo==3.10.1
+
+------------------
+# CosmoDB Account
+
+// Attention!!! 
+// For this step I opted to run on portal
+
+az cosmosdb create \
+  --name $COSMOSDB_ACCOUNT \
+  --resource-group $RESOURCE_GROUP \
+  --locations regionName='West US 2' failoverPriority=0 isZoneRedundant=False \
+  --kind MongoDB \
+  --server-version $MONGODB_SERVER_VERSION \
+  --subscription $AZURE_SUBSCRIPTION
+  
+
+az cosmosdb mongodb database create \
+  --account-name $COSMOSDB_ACCOUNT \
+  --name $MONGODB \
+  --resource-group $RESOURCE_GROUP \
+  --throughput 4000 \
+  --subscription $AZURE_SUBSCRIPTION 
+
+---------------
+# Get CosmosDB key 
+export COSMOSDB_KEY=$(az cosmosdb keys list --name $COSMOSDB_ACCOUNT --resource-group $RESOURCE_GROUP --output tsv |awk '{print $1}')
+
+--------------
+# MongoDB Configuration
+
+mongodb://yross-cosmosdb:BQAKjpvTZ62RsIQABT3XYWrH26WZXDywIe8kbB66Yn5CTRSQgQj42X62hmcRPwNFrqSSevhETRp7AF03IiPr0w==@yross-cosmosdb.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@yross-cosmosdb@
+
+export COSMOSDB_HOST=$COSMOSDB_ACCOUNT.mongo.cosmos.azure.com
+export COSMOSDB_PORT=10255
+export COSMOSDB_USERNAME=$COSMOSDB_ACCOUNT
+export COSMOSDB_PASSWORD=BQAKjpvTZ62RsIQABT3XYWrH26WZXDywIe8kbB66Yn5CTRSQgQj42X62hmcRPwNFrqSSevhETRp7AF03IiPr0w== \
+
+mongo \
+  --host $COSMOSDB_HOST \
+  --port $COSMOSDB_PORT \
+  --username $COSMOSDB_USERNAME \
+  --password $COSMOSDB_PASSWORD \
+  --ssl
+
+---------------
+# Create Collection
+
+az cosmosdb mongodb collection create \
+  --account-name $COSMOSDB_ACCOUNT \
+  --database-name $MONGODB \
+  --name $MONGODB_POSTS_COLLECTION \
+  --resource-group $RESOURCE_GROUP \
+  --subscription $AZURE_SUBSCRIPTION \
+  --throughput 400
+
+az cosmosdb mongodb collection create \
+  --account-name $COSMOSDB_ACCOUNT \
+  --database-name $MONGODB \
+  --name $MONGODB_ADVERTISEMENTS_COLLECTION \
+  --resource-group $RESOURCE_GROUP \
+  --subscription $AZURE_SUBSCRIPTION \
+  --throughput 400
+
+---------------
+# Import dataset into the collections
+
+mongoimport \
+  --host $COSMOSDB_HOST \
+  --port $COSMOSDB_PORT \
+  --username $COSMOSDB_ACCOUNT \
+  --password $COSMOSDB_PASSWORD \
+  --jsonArray \
+  --file ./sample_data/samplePosts.json \
+  --db yross_mongodb \
+  --collection $MONGODB_POSTS_COLLECTION \
+  --ssl
+
+mongoimport \
+  --host $COSMOSDB_HOST \
+  --port $COSMOSDB_PORT \
+  --username $COSMOSDB_ACCOUNT \
+  --password $COSMOSDB_PASSWORD \
+  --jsonArray \
+  --file ./sample_data/sampleAds.json \
+  --db yross_mongodb \
+  --collection $MONGODB_ADVERTISEMENTS_COLLECTION \
+  --ssl
+
+
+-----------------
+# Deploy the frontend app
+
+python3 -m venv venv
+source /venv/bin/activate
+pip3 install -r requirements.txt
+
+export FLASK_RUN=app.py
+export FLASK_ENV=development
+flask run
+
+
+az webapp up --sku F1 \
+  --name $WEB_APP_NAME \
+  --resource-group $RESOURCE_GROUP \
+  --location $LOCATION 
+
+
+https://docs.microsoft.com/en-us/azure/aks/tutorial-kubernetes-prepare-acr?tabs=azure-cli
+
+----------------
+# Create the Container Registry
+
+az acr create \
+  --resource-group $RESOURCE_GROUP \
+  --name $APP_REGISTRY \
+  --location $LOCATION  \
+  --sku Basic
+
+----------------
+# Login server address details
+
+az acr list \
+  --resource-group $RESOURCE_GROUP \
+  --query "[].{acrLoginServer:loginServer}" \
+  --output table
+
+----------------
+# Login container registry
+
+az acr login \
+  --name $APP_REGISTRY
+
+----------------
+# Docker login  
+Login to your registry that you just created. Azure will ask for username and password. 
+This is under your Container Registry service >> Settings >> Access Keys.
+
+docker login $APP_REGISTRY.azurecr.io
+yrossregistry
+SbWOTExVxvZ=mbId3lZFHlcfdPJeVr3V
+UkN7QMaBIMVRopn6V//0nQWl7WmfXkbW
+
+----------------
+# Generate Dockerfile
+
+func init --docker-only
+
+----------------
+# Build the docker image.
+
+docker build -t $APP_IMAGE_NAME .
+
+----------------
+# Test the image locally.
+docker run -p 8080:80 -it $APP_IMAGE_NAME
+
+----------------
+# Tag your docker image for Azure Container Registry.
+
+docker tag $APP_IMAGE_NAME $APP_REGISTRY.azurecr.io/$APP_IMAGE_NAME
+
+----------------
+# Push the image to Azure Container Registry.
+
+docker push $APP_REGISTRY.azurecr.io/$APP_IMAGE_NAME
+
+
+----------------
+# Create K8s Cluster
+
+az aks create \
+  --resource-group $RESOURCE_GROUP \
+  --name $K8S_CLUSTER_NAME \
+  --node-count 2 \
+  --generate-ssh-keys \
+  --attach-acr $APP_REGISTRY
+
+
+----------------
+# K8s Cluster credentials
+
+az aks get-credentials \
+  --resource-group $RESOURCE_GROUP \
+  --name $K8S_CLUSTER_NAME
+
+az aks update -n $K8S_CLUSTER_NAME -g $RESOURCE_GROUP --attach-acr $APP_REGISTRY
+
+----------------
+# Kubectl commands
+
+# List all deployments in all namespaces
+kubectl get deployments --all-namespaces=true
+
+# List all deployments in a specific namespace
+# Format :kubectl get deployments --namespace <namespace-name>
+kubectl get deployments --namespace kube-system
+
+
+# List details about a specific deployment
+# Format :kubectl describe deployment <deployment-name> --namespace <namespace-name>
+kubectl describe deployment my-dep --namespace kube-system
+
+# List pods using a specific label
+# Format :kubectl get pods -l <label-key>=<label-value> --all-namespaces=true
+kubectl get pods -l app=nginx --all-namespaces=true
+
+
+# Get logs for all pods with a specific label
+# Format :kubecl logs -l <label-key>=<label-value>
+kubectl logs -l app=nginx --namespace kube-system
+
+
+----------------
+# KEDA
+KEDA is Google's opensource tool for Kubernetes event-driven Autoscaling. Let's set up the KEDA namespace for our Kubernetes cluster.
+
+func kubernetes install --namespace keda    
+
+----------------
+# Deploy container in K8s
+
+// the instruction is not clear, but this is the deploy of the API, not frontend
+
+func kubernetes deploy \
+  --name $APP_NAME \
+  --image-name $APP_REGISTRY.azurecr.io/$APP_IMAGE_NAME:latest \
+  --dry-run > deploy.yml
+  
+func kubernetes deploy --name $K8s_DEPLOY_NAME --image-name $APP_REGISTRY.azurecr.io/$APP_IMAGE_NAME:latest --dry-run > deploy.yml
+
+func kubernetes deploy \
+  --name $K8S_CLUSTER_NAME \
+  --image-name  $APP_REGISTRY.azurecr.io/$APP_IMAGE_NAME \
+  --polling-interval 3 \
+  --cooldown-period 5
+
+kubectl apply -f deploy.yml
+
+
+----------------
+
+Instructor Steps (complete mess)
+
+Follow the steps below:
+
+Define names for storage account and functionapp. These names must be unique. Note: Use your own unique names below.
+
+storageName=funcappcosmodbsa
+functionAppName='azfuncwithcosmosdb'
+region=westus2
+resourceGroup=funcappcosmosdbrg
+databaseName='myfirstdatabase'
+collectionName='myfirstcollection'
+serverVersion='4.0'
+
+Create a resource group. We want the functionapp and cosmosdb to be in the same resource group.
+
+az group create \
+  --name $resourceGroup \
+  --location $region
+
+Create a storage account
+
+az storage account create \
+  --name $storageName \
+  --location $region \
+  --resource-group $resourceGroup \
+  --sku Standard_LRS
+
+Create a function app (serverless) in the resource group created above
+  az functionapp create \
+  --name $functionAppName \
+  --resource-group $resourceGroup \
+  --storage-account $storageName \
+  --consumption-plan-location $region \
+  --functions-version 3
+
+Create an Azure Cosmos DB database using the same function app name that you used above
+az cosmosdb create \
+  --name $functionAppName \
+  --resource-group $resourceGroup \
+  --default-consistency-level Eventual \
+  --locations regionName='West US 2' failoverPriority=0 isZoneRedundant=False \
+  --locations regionName='East US 2' failoverPriority=1 isZoneRedundant=False
+
+Create a SQL API Database
+az cosmosdb sql database create \
+  -a $functionAppName \
+  -g $resourceGroup \
+  -d $databaseName \
+  -n $collectionName \
+
+Now we need to establish a connection between Azure Cosmo DB and the functionapp. To that end, get the Azure Cosmo DB connection string and key
+
+endpoint=$(az cosmosdb show \
+  --name $functionAppName \
+  --resource-group $resourceGroup \
+  --query documentEndpoint \
+  --output csv)
+
+key=$(az cosmosdb list-keys \
+  --name $functionAppName \
+  --resource-group $resourceGroup \
+  --query primaryMasterKey \
+  --output csv)
+
+Finally, configure FunctionApp to use the Azure Cosmo DB connection string obtained in the above step
+
+az functionapp config appsettings set \
+  --name $functionAppName \
+  --resource-group $resourceGroup \
+  --setting CosmosDB_Endpoint=$endpoint CosmosDB_Key=$key
+

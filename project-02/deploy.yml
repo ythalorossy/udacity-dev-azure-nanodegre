@@ -1,0 +1,9 @@
+data:
+  AzureWebJobsStorage: ''
+  FUNCTIONS_WORKER_RUNTIME: cHl0aG9u
+apiVersion: v1
+kind: Secret
+metadata:
+  name: yross-k8s-deploy
+---
+
