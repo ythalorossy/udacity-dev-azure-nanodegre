@@ -336,11 +336,11 @@ func kubernetes deploy \
   --image-name $APP_REGISTRY.azurecr.io/$APP_IMAGE_NAME:latest \
   --dry-run > deploy.yml
   
-func kubernetes deploy --name $K8s_DEPLOY_NAME --image-name $APP_REGISTRY.azurecr.io/$APP_IMAGE_NAME:latest --dry-run > deploy.yml
+func kubernetes deploy --name $APP_NAME --image-name $APP_REGISTRY.azurecr.io/$APP_IMAGE_NAME:latest --dry-run > deploy.yml
 
 func kubernetes deploy \
-  --name $K8S_CLUSTER_NAME \
-  --image-name  $APP_REGISTRY.azurecr.io/$APP_IMAGE_NAME \
+  --name $APP_NAME \
+  --image-name $APP_REGISTRY.azurecr.io/$APP_IMAGE_NAME:latest \
   --polling-interval 3 \
   --cooldown-period 5
 
