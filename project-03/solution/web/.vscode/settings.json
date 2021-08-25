@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/0e69f060-471b-46f0-9208-444e3f1b7f36/resourceGroups/cloud-demo-155778/providers/Microsoft.Web/sites/yross-web-app",
+    "appService.deploySubpath": "."
+}
