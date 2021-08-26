@@ -87,4 +87,94 @@ The migration to an Azure App Service and Azure Postgres database instance impro
 
 ## Screenshots
 
-You can find all the screenshot inside of the directory screenshots.
+### Migrate Web Applications
+
+Screenshot of Azure Resource showing the App Service Plan:
+
+*The App Service Plan created and listed bellow*
+
+![App Service Plan](screenshots/0001_azure_all_resources.png)
+
+Screenshot of the deployed Web App running:
+
+![Web App](screenshots/0009_web_app_online.png)
+
+Screenshot of the deployed Web App running (logs):
+
+![Web App Log Stream](screenshots/0010_azure_web_app_log_stream.png)
+
+### Migrate Database
+
+Screenshot of the Azure Resource showing the Azure Database for PostgreSQL server:
+
+![Azure Database for PostgreSQL server](screenshots/0002_azure_postgres_server.png)
+
+![Azure Database - Attendee Table](screenshots/0003_postgres_restored.png)
+
+![Azure Database - Conference Table](screenshots/0004_postgres_restored_1.png)
+
+Screenshot of the Web App successfully loading the list of attendees and notifications from the deployed website:
+
+![Web App: Attendees](screenshots/0011_web_app_administrator.png)
+
+![Web App: Notifications](screenshots/0012_web_notifications_list.png)
+
+### Migrate Background Process - 4 Screenshots
+
+Screenshot of the Azure Function App running in Azure, showing the function name and the function app plan:
+
+*The Function App was created and listed bellow*
+
+![Azure Function App](screenshots/0001_azure_all_resources.png)
+
+Screenshots of submitting a new notification (filled out Send Notification form):
+
+*You can see that the first element in the list is a new notification*
+
+![Web App: New notification](screenshots/0012_web_notifications_list.png)
+
+Screenshot of the Email Notifications List showing the notification status as "Notifications submitted":
+
+![Web App: Notification submitted](screenshots/0013_web_notifications_submitted.png)
+
+Screenshot of the Email Notifications List showing the notification status as "Notified X attendees":
+
+![Web App: Notified](screenshots/0014_web_notifications_notified.png)
+
+
+Screenshot showing Service Bus - Queue Notification
+
+![Service Bus](screenshots/0005_azure_service_bus.png)
+
+Screenshot showing Service Bus - Queue
+
+![Service Bus: Queue](screenshots/0006_azure_service_bus_queue_notification.png)
+
+
+
+## Clean-up
+
+Clean up and remove all services, or else you will incur charges:
+
+```bash
+az group delete --name <SOURCE_GROUP_NAME>
+```
+
+## References
+
+- [Quickstart: Create an Azure Database for PostgreSQL server by using the Azure CLI](https://docs.microsoft.com/en-us/azure/postgresql/quickstart-create-server-database-azure-cli)
+- [Quickstart: Create, download, and list blobs with Azure CLI](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-cli)
+- [Quickstart: Create a Python app using Azure App Service on Linux](https://docs.microsoft.com/en-us/azure/app-service/quickstart-python?tabs=bash&pivots=python-framework-flask)
+- [Work with Azure Functions Core Tools](https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=linux%2Cpython%2Cbash)
+- [Total Cost of Ownership (TCO) Calculator](https://azure.microsoft.com/en-us/pricing/tco/calculator/)
+- [Azure pricing](https://azure.microsoft.com/en-us/pricing/)
+- [Pricing calculator](https://azure.microsoft.com/en-us/pricing/calculator/)
+
+## Requirements
+
+Graded according to the [Project Rubric](https://review.udacity.com/#!/rubrics/2824/view).
+
+## License
+
+- **[MIT license](http://opensource.org/licenses/mit-license.php)**
+- Copyright 2021 © [Ythalo Rossy](https://github.com/ythalorossy).
