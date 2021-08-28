@@ -24,7 +24,11 @@ The following screenshots should be taken and uploaded to this **screenshots** f
 
 3. **Migrate Background Process - 4 Screenshots**
  - Screenshot of the Azure Function App running in Azure, showing the **function name** and the **function app plan**.
-![Web App: Function App](azure_function_app_overview.png)
+  ![Web App: Function App](azure_function_app_overview.png)
+  ![Web App: Function App](azure_function_app_configutation.png)
+  ![Web App: Function App](azure_function_app_execution.png)
+  ![Web App: Function App](azure_function_app_integration.png)
+
 
  - Screenshots of the following showing functionality of the deployed site:
     1. Submitting a new notification.
