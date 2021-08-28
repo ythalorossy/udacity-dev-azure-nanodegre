@@ -59,12 +59,13 @@ pass:
 Connection String to techconfdb
 
 
+
+
 # Service Bus Queue
 
-Endpoint=sb://yross-service-bus.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=j55IEe3OxbdWRau+WOOqWVjeObSlS8uCxfQEX+CX/ts=
+Endpoint=sb://yross-service-bus.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=ACxxuTYR06ePv2p6UCVIdyK6hVjUJVlkPFs1l73z6qw=
 
-Endpoint=sb://yross-service-bus.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=8LAZ8jENE/vs1mbOU1wdf5LGUw86t1v1PQPkG4kM7MI=
-
+Endpoint=sb://yross-service-bus.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=91lBeo3NbTj6sN78ZcQH8X7FUm0BjiDsFjZhzMzKkjo=
 
 # Service Plan
 
@@ -72,7 +73,7 @@ yross-app-servce-plan
 
 # Storage Account
 
-yrossstrgacc
+yrossstorageaccount
 
 # Azure Web App
 

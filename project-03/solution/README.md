@@ -3,15 +3,15 @@
 ## Project Overview
 The TechConf website allows attendees to register for an upcoming conference. Administrators can also view the list of attendees and notify all attendees via a personalized email message.
 
-The application is currently working but the following pain points have triggered the need for migration to Azure:
- - The web application is not scalable to handle user load at peak
- - When the admin sends out notifications, it's currently taking a long time because it's looping through all attendees, resulting in some HTTP timeout exceptions
- - The current architecture is not cost-effective 
+The application is currently working, but the following pain points have triggered the need for migration to Azure:
+ - The web application is not scalable to handle user load at peak.
+ - When the admin sends out notifications, it's currently taking a long time because it's looping through all attendees, resulting in some HTTP timeout exceptions.
+ - The current architecture is not cost-effective.
 
-In this project, you are tasked to do the following:
-- Migrate and deploy the pre-existing web app to an Azure App Service
-- Migrate a PostgreSQL database backup to an Azure Postgres database instance
-- Refactor the notification logic to an Azure Function via a service bus queue message
+In this project, you need to do the following:
+- Migrate and deploy the pre-existing web app to an Azure App Service.
+- Migrate a PostgreSQL database backup to an Azure Postgres database instance.
+- Refactor the notification logic to an Azure Function via a service bus queue message.
 
 ## Dependencies
 
@@ -37,8 +37,8 @@ You will need to install the following locally:
       - `POSTGRES_PW`
       - `POSTGRES_DB`
       - `SERVICE_BUS_CONNECTION_STRING`
-4. Create App Service plan
-5. Create a storage account
+4. Create `App Service plan`.
+5. Create a `Storage account`.
 6. Deploy the web app
 
 ### Part 2: Create and Publish Azure Function
@@ -46,11 +46,11 @@ You will need to install the following locally:
 
       **Note**: Skeleton code has been provided in the **README** file located in the `function` folder. You will need to copy/paste this code into the `__init.py__` file in the `function` folder.
       - The Azure Function should do the following:
-         - Process the message which is the `notification_id`
-         - Query the database using `psycopg2` library for the given notification to retrieve the subject and message
-         - Query the database to retrieve a list of attendees (**email** and **first name**)
-         - Loop through each attendee and send a personalized subject message
-         - After the notification, update the notification status with the total number of attendees notified
+         - Process the message which is the `notification_id`.
+         - Query the database using `psycopg2` library for the given notification to retrieve the subject and message.
+         - Query the database to retrieve a list of attendees (**email** and **first name**).
+         - Loop through each attendee and send a personalized subject message.
+         - After the notification, update the notification status with the total number of attendees notified.
 2. Publish the Azure Function
 
 ### Part 3: Refactor `routes.py`
@@ -60,7 +60,7 @@ You will need to install the following locally:
 
 ## Monthly Cost Analysis
 
-Complete a month cost analysis of each Azure resource to give an total costs using the table below:
+Complete a month cost analysis of each Azure resource to give a total costs using the table below:
 
 | Azure Resource              | Service Tier             | Monthly Cost |
 | --------------------------- | ------------------------ | ------------ |
@@ -71,7 +71,7 @@ Complete a month cost analysis of each Azure resource to give an total costs usi
 | _Azure Function App_        | Consumption              | $1.80        |
 
 
-All resources are located in East US. See [pricing calculator](https://azure.com/e/df876a84f49e416fa26d56224112d9c8) to see details.
+See [pricing calculator](https://azure.com/e/df876a84f49e416fa26d56224112d9c8) for more details.
 
 ## Architecture Explanation
 
@@ -91,70 +91,85 @@ The migration to an Azure App Service and Azure Postgres database instance impro
 
 Screenshot of Azure Resource showing the App Service Plan:
 
-*The App Service Plan created and listed bellow*
+*The App Service Plan created and listed below*
 
-![App Service Plan](screenshots/0001_azure_all_resources.png)
+![App Service Plan](screenshots/azure_all_resources.png)
 
 Screenshot of the deployed Web App running:
 
-![Web App](screenshots/0009_web_app_online.png)
+![Web App](screenshots/azure_wep_app_deployed.png)
 
-Screenshot of the deployed Web App running (logs):
+Screenshot of the deployed Web App running (Overview):
 
-![Web App Log Stream](screenshots/0010_azure_web_app_log_stream.png)
+![Web App Log Stream](screenshots/azure_web_app_overview.png)
 
 ### Migrate Database
 
 Screenshot of the Azure Resource showing the Azure Database for PostgreSQL server:
 
-![Azure Database for PostgreSQL server](screenshots/0002_azure_postgres_server.png)
+![Azure Database for PostgreSQL server](screenshots/azure_postgres_single_server.png)
 
-![Azure Database - Attendee Table](screenshots/0003_postgres_restored.png)
+Screenshot of the Azure Resource showing the Azure Database for PostgreSQL server Firewall Rules:
 
-![Azure Database - Conference Table](screenshots/0004_postgres_restored_1.png)
+![Azure Database for PostgreSQL server](screenshots/azure_postgres_all_ips_firewall_rule.png)
+
+
+Screenshot of the Postgres Administrator restoring the database:
+
+![Azure Database for PostgreSQL server](screenshots/postgres_restored_database.png)
+
+Screenshot of the Attendees Table
+
+![Azure Database - Attendee Table](screenshots/postgres_query_attendees_table.png)
+
+Screenshot of the Conference Table
+
+![Azure Database - Conference Table](screenshots/postgres_query_conference_table.png)
 
 Screenshot of the Web App successfully loading the list of attendees and notifications from the deployed website:
 
-![Web App: Attendees](screenshots/0011_web_app_administrator.png)
+![Web App: Attendees](screenshots/azure_web_app_attendees_page.png)
 
-![Web App: Notifications](screenshots/0012_web_notifications_list.png)
+
+![Web App: Notifications](screenshots/azure_web_app_registration_page.png)
+
+![Web App: Notifications](screenshots/azure_web_app_registration_success_page.png)
+
+
 
 ### Migrate Background Process - 4 Screenshots
 
 Screenshot of the Azure Function App running in Azure, showing the function name and the function app plan:
 
-*The Function App was created and listed bellow*
-
-![Azure Function App](screenshots/0001_azure_all_resources.png)
+![Azure Function App](screenshots/azure_function_app_overview.png)
 
 Screenshots of submitting a new notification (filled out Send Notification form):
 
-*You can see that the first element in the list is a new notification*
-
-![Web App: New notification](screenshots/0012_web_notifications_list.png)
+![Web App: New notification](screenshots/azure_web_app_create_notification.png)
 
 Screenshot of the Email Notifications List showing the notification status as "Notifications submitted":
 
-![Web App: Notification submitted](screenshots/0013_web_notifications_submitted.png)
+![Web App: Notification submitted](screenshots/azure_web_app_sent_notifications.png)
 
 Screenshot of the Email Notifications List showing the notification status as "Notified X attendees":
 
-![Web App: Notified](screenshots/0014_web_notifications_notified.png)
+![Web App: Notified](screenshots/azure_web_app_sent_notifications.png)
 
+
+Screenshot showing Service Bus 
+
+![Service Bus](screenshots/azure_service_bus.png)
 
 Screenshot showing Service Bus - Queue Notification
 
-![Service Bus](screenshots/0005_azure_service_bus.png)
-
-Screenshot showing Service Bus - Queue
-
-![Service Bus: Queue](screenshots/0006_azure_service_bus_queue_notification.png)
+![Service Bus: Queue](screenshots/azure_service_bus.png)
 
 
 
 ## Clean-up
 
-Clean up and remove all services, or else you will incur charges:
+Clean up and remove all services, or else you will incur charges. 
+The best option is to delete the `source group` where the resources were created.
 
 ```bash
 az group delete --name <SOURCE_GROUP_NAME>
@@ -172,7 +187,7 @@ az group delete --name <SOURCE_GROUP_NAME>
 
 ## Requirements
 
-Graded according to the [Project Rubric](https://review.udacity.com/#!/rubrics/2824/view).
+According to the [Project Rubric](https://review.udacity.com/#!/rubrics/2824/view).
 
 ## License
 

@@ -7,8 +7,7 @@
       "type": "serviceBusTrigger",
       "direction": "in",
       "topicName": "notificationqueue",
-      "subscriptionName": "mysubscription",
-      "connection": "yrossservicebus_SERVICEBUS"
+      "subscriptionName": "UdacityDS - 26"
     }
   ]
 }
