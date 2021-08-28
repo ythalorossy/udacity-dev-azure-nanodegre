@@ -143,6 +143,17 @@ Screenshot of the Azure Function App running in Azure, showing the function name
 
 ![Azure Function App](screenshots/azure_function_app_overview.png)
 
+![Azure Function App](screenshots/azure_function_app_configutation.png)
+
+![Azure Function App](screenshots/azure_function_app_integration.png)
+
+![Azure Function App](screenshots/azure_function_app_execution.png)
+
+Screenshot of the Notification Table after a few notifications sent.
+
+![Azure Function App](screenshots/postgres_sent_notifications.png)
+
+
 Screenshots of submitting a new notification (filled out Send Notification form):
 
 ![Web App: New notification](screenshots/azure_web_app_create_notification.png)
