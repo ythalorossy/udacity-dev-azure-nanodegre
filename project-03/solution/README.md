@@ -173,7 +173,7 @@ Screenshot showing Service Bus
 
 Screenshot showing Service Bus - Queue Notification
 
-![Service Bus: Queue](screenshots/azure_service_bus.png)
+![Service Bus: Queue](screenshots/azure_service_bus_queue_notification.png)
 
 
 
