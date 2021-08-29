@@ -63,9 +63,9 @@ def main(msg: func.ServiceBusMessage):
 
             logging.info(f"Sendgrid API key {os.environ['SENDGRID_API_KEY']}")
 
-            # mail = Mail(from_email, to_emails, personalized_subject, content)
-            # sg = SendGridAPIClient(os.environ['SENDGRID_API_KEY'])
-            # sg.send(mail)
+            mail = Mail(from_email, to_emails, personalized_subject, content)
+            sg = SendGridAPIClient(os.environ['SENDGRID_API_KEY'])
+            sg.send(mail)
 
             count += 1
 
