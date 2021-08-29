@@ -13,10 +13,10 @@ class BaseConfig:
     SQLALCHEMY_DATABASE_URI = os.getenv('SQLALCHEMY_DATABASE_URI') or DB_URL
     CONFERENCE_ID = 1
     SECRET_KEY = 'LWd2tzlprdGHCIPHTd4tp5SBFgDszm'
-    SERVICE_BUS_CONNECTION_STRING = 'Endpoint=sb://yross-service-bus.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=ACxxuTYR06ePv2p6UCVIdyK6hVjUJVlkPFs1l73z6qw='
+    SERVICE_BUS_CONNECTION_STRING = 'Endpoint=sb://yross-service-bus-1.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=oGRzfDxnT2Hm7vWaDSfbEKFCM/TVLkyQ2pNFaFeN+cY='
     SERVICE_BUS_QUEUE_NAME = 'notificationqueue'
     ADMIN_EMAIL_ADDRESS = 'ythalorossy@gmail.com'
-    SENDGRID_API_KEY = '' #Configuration not required, required SendGrid Account
+    SENDGRID_API_KEY = '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' #Configuration not required, required SendGrid Account
 
 class DevelopmentConfig(BaseConfig):
     DEBUG = True

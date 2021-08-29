@@ -89,11 +89,13 @@ The migration to an Azure App Service and Azure Postgres database instance impro
 
 ### Migrate Web Applications
 
-Screenshot of Azure Resource showing the App Service Plan:
-
-*The App Service Plan created and listed below*
+Screenshot of Azure Resource:
 
 ![App Service Plan](screenshots/azure_all_resources.png)
+
+Screenshot of Azure Resource showing the App Service Plan:
+
+![App Service Plan](screenshots/azure_app_service_plan.png)
 
 Screenshot of the deployed Web App running:
 

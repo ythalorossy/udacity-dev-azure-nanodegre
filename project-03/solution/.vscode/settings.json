@@ -1,10 +1,10 @@
 {
-    "azureFunctions.deploySubpath": "function",
+    "azureFunctions.deploySubpath": ".",
     "azureFunctions.scmDoBuildDuringDeployment": true,
     "azureFunctions.pythonVenv": ".venv",
     "azureFunctions.projectLanguage": "Python",
     "azureFunctions.projectRuntime": "~3",
     "debug.internalConsoleOptions": "neverOpen",
-    "appService.defaultWebAppToDeploy": "/subscriptions/d69af47e-53dd-448d-a185-9d8bc0ffb988/resourceGroups/appsvc_linux_centralus_basic/providers/Microsoft.Web/sites/yross-web-app",
-    "appService.deploySubpath": "web"
+    "appService.deploySubpath": "web",
+    "appService.defaultWebAppToDeploy": "/subscriptions/64e349c9-f058-4158-8065-3c0efb0b95eb/resourceGroups/cloud-demo/providers/Microsoft.Web/sites/yross-web-app"
 }

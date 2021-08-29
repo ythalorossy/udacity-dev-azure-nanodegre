@@ -6,7 +6,7 @@
       "type": "serviceBusTrigger",
       "direction": "in",
       "queueName": "notificationqueue",
-      "connection": "yrossservicebus_SERVICEBUS"
+      "connection": "yrossservicebus1_SERVICEBUS"
     }
   ]
 }

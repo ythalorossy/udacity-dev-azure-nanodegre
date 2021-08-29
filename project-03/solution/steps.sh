@@ -59,17 +59,19 @@ pass:
 Connection String to techconfdb
 
 
-
-
 # Service Bus Queue
 
-Endpoint=sb://yross-service-bus.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=ACxxuTYR06ePv2p6UCVIdyK6hVjUJVlkPFs1l73z6qw=
+yross-service-bus
 
-Endpoint=sb://yross-service-bus.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=91lBeo3NbTj6sN78ZcQH8X7FUm0BjiDsFjZhzMzKkjo=
+Endpoint=sb://yross-service-bus-1.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=oGRzfDxnT2Hm7vWaDSfbEKFCM/TVLkyQ2pNFaFeN+cY=
 
 # Service Plan
 
 yross-app-servce-plan
+
+# Function App
+
+yross-function-app
 
 # Storage Account
 
