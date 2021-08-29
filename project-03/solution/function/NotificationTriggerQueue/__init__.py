@@ -61,9 +61,11 @@ def main(msg: func.ServiceBusMessage):
             personalized_subject = f"Hello, {first_name}! {subject}"
             content = Content("text/plain", message)
 
-            mail = Mail(from_email, to_emails, personalized_subject, content)
-            sg = SendGridAPIClient(os.environ['SENDGRID_API_KEY'])
-            sg.send(mail)
+            logging.info(f"Sendgrid API key {os.environ['SENDGRID_API_KEY']}")
+
+            # mail = Mail(from_email, to_emails, personalized_subject, content)
+            # sg = SendGridAPIClient(os.environ['SENDGRID_API_KEY'])
+            # sg.send(mail)
 
             count += 1
 

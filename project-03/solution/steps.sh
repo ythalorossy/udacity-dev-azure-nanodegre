@@ -63,7 +63,9 @@ Connection String to techconfdb
 
 yross-service-bus
 
-Endpoint=sb://yross-service-bus-1.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=oGRzfDxnT2Hm7vWaDSfbEKFCM/TVLkyQ2pNFaFeN+cY=
+notificationqueue
+
+Endpoint=sb://yross-service-bus-1.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=lWRT/SO/HNQPIwYBp/jtJxvrFCuiVrTSTsYlE/ok+cs=
 
 # Service Plan
 

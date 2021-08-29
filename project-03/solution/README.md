@@ -91,7 +91,7 @@ The migration to an Azure App Service and Azure Postgres database instance impro
 
 Screenshot of Azure Resource:
 
-![App Service Plan](screenshots/azure_all_resources.png)
+![Azure All Resources](screenshots/azure_all_resources.png)
 
 Screenshot of Azure Resource showing the App Service Plan:
 
@@ -115,7 +115,6 @@ Screenshot of the Azure Resource showing the Azure Database for PostgreSQL serve
 
 ![Azure Database for PostgreSQL server](screenshots/azure_postgres_all_ips_firewall_rule.png)
 
-
 Screenshot of the Postgres Administrator restoring the database:
 
 ![Azure Database for PostgreSQL server](screenshots/postgres_restored_database.png)
@@ -130,13 +129,11 @@ Screenshot of the Conference Table
 
 Screenshot of the Web App successfully loading the list of attendees and notifications from the deployed website:
 
-![Web App: Attendees](screenshots/azure_web_app_attendees_page.png)
-
-
 ![Web App: Notifications](screenshots/azure_web_app_registration_page.png)
 
 ![Web App: Notifications](screenshots/azure_web_app_registration_success_page.png)
 
+![Web App: Attendees](screenshots/azure_web_app_attendees_page.png)
 
 
 ### Migrate Background Process - 4 Screenshots
