@@ -31,7 +31,10 @@ instrumentation_key = app.config['APP_INSIGHTS_INSTRUMENTATION_KEY']
 
 # Logging
 logger = logging.getLogger(__name__)
-logger.addHandler(AzureLogHandler(connection_string=instrumentation_key))
+handler = AzureLogHandler(connection_string=instrumentation_key)
+handler.setFormatter(logging.Formatter('%(traceId)s %(spanId)s %(message)s'))
+logger.addHandler(handler)
+
 logger.addHandler(AzureEventHandler(connection_string=instrumentation_key))
 logger.setLevel(logging.INFO)
 
