@@ -155,7 +155,7 @@ The script above will take a few minutes to create VMSS and related resources. O
       ```bash
       # Find the port for connecting via SSH 
       az vmss list-instance-connection-info \
-         --resource-group acdnd-c4-project \
+         --resource-group cloud-demo \
          --name udacity-vmss 
       # The following command will connect you to your VM. 
       # Replace `[public-ip]` with the public-ip address of your VMSS.
