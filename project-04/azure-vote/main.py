@@ -29,6 +29,8 @@ app = Flask(__name__)
 app.config.from_pyfile('config_file.cfg')
 instrumentation_key = app.config['APP_INSIGHTS_INSTRUMENTATION_KEY']
 
+print(f'Instrumentation Key: {instrumentation_key}')
+
 # Logging
 logger = logging.getLogger(__name__)
 handler = AzureLogHandler(connection_string=instrumentation_key)
@@ -89,10 +91,12 @@ if not r.get(button2):
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'GET':
+
         # Get current values
         vote1 = r.get(button1).decode('utf-8')
         # Use tracer object to trace cat vote
         tracer.span(name="Cat")
+        
         vote2 = r.get(button2).decode('utf-8')
         # Use tracer object to trace dog vote
         tracer.span(name="Dog")
