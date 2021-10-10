@@ -1,9 +1,7 @@
 from flask import Flask, request, render_template
 import os
-import random
 import redis
 import socket
-import sys
 import logging
 from datetime import datetime
 
@@ -23,22 +21,22 @@ from opencensus.trace.samplers import AlwaysOnSampler
 from opencensus.trace.tracer import Tracer
 from opencensus.ext.flask.flask_middleware import FlaskMiddleware
 
+stats = stats_module.stats
+view_manager = stats.view_manager
+stats_recorder = stats.stats_recorder
+
 app = Flask(__name__)
 
 # Load configurations from environment or config file
 app.config.from_pyfile('config_file.cfg')
-instrumentation_key = app.config['APP_INSIGHTS_INSTRUMENTATION_KEY']
 
+# Application Insight Instrumentation Key
+instrumentation_key = app.config['APP_INSIGHTS_INSTRUMENTATION_KEY']
 print(f'Instrumentation Key: {instrumentation_key}')
 
 # Logging
 logger = logging.getLogger(__name__)
-handler = AzureLogHandler(connection_string=instrumentation_key)
-handler.setFormatter(logging.Formatter('%(traceId)s %(spanId)s %(message)s'))
-logger.addHandler(handler)
-
-logger.addHandler(AzureEventHandler(connection_string=instrumentation_key))
-logger.setLevel(logging.INFO)
+logger.addHandler(AzureLogHandler(connection_string=instrumentation_key))
 
 # Metrics
 exporter = metrics_exporter.new_metrics_exporter(
@@ -51,6 +49,7 @@ tracer = Tracer(
         connection_string=instrumentation_key),
     sampler=ProbabilitySampler(1.0),
 )
+
 
 # Requests
 middleware = FlaskMiddleware(
@@ -90,44 +89,45 @@ if not r.get(button2):
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+
     if request.method == 'GET':
 
         # Get current values
         vote1 = r.get(button1).decode('utf-8')
-        # Use tracer object to trace cat vote
-        tracer.span(name="Cat")
-        print('Span Cat')
-
+        tracer.span(name="Cats")
+        # TODO: use tracer object to trace cat vote
+        
         vote2 = r.get(button2).decode('utf-8')
-        # Use tracer object to trace dog vote
-        tracer.span(name="Dog")
-        print('Span Dog')
+        tracer.span(name="Dogs")
+        # TODO: use tracer object to trace dog vote
 
         # Return index with values
         return render_template("index.html", value1=int(vote1), value2=int(vote2), button1=button1, button2=button2, title=title)
-    
+
     elif request.method == 'POST':
-        
+
         if request.form['vote'] == 'reset':
+
             # Empty table and return results
-            r.set(button1, 0)
-            r.set(button2, 0)
+            r.set(button1,0)
+            r.set(button2,0)
             vote1 = r.get(button1).decode('utf-8')
             properties = {'custom_dimensions': {'Cats Vote': vote1}}
-            # Use logger object to log cat vote
-            logger.info("Cat", extra=properties)
+            # TODO: use logger object to log cat vote
+            logger.warning("Cats", extra=properties)
 
             vote2 = r.get(button2).decode('utf-8')
             properties = {'custom_dimensions': {'Dogs Vote': vote2}}
-            # Use logger object to log dog vote
-            logger.info("Dog", extra=properties)
+            # TODO: use logger object to log dog vote
+            logger.warning("Dogs", extra=properties)
 
             return render_template("index.html", value1=int(vote1), value2=int(vote2), button1=button1, button2=button2, title=title)
-        
+
         else:
+
             # Insert vote result into DB
             vote = request.form['vote']
-            r.incr(vote, 1)
+            r.incr(vote,1)
 
             # Get current values
             vote1 = r.get(button1).decode('utf-8')
@@ -138,6 +138,6 @@ def index():
 
 if __name__ == "__main__":
     # comment line below when deploying to VMSS
-    # app.run() # local
+    #app.run() # local
     # uncomment the line below before deployment to VMSS
     app.run(host='0.0.0.0', threaded=True, debug=True) # remote
