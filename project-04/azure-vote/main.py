@@ -41,7 +41,7 @@ config_integration.trace_integrations(['requests'])
 # Standard Logging
 logger = logging.getLogger(__name__)
 handler = AzureLogHandler(connection_string=instrumentation_key)
-handler.setFormatter(logging.Formatter('%(traceId)s %(spanId)s %(message)s'))
+# handler.setFormatter(logging.Formatter('%(traceId)s %(spanId)s %(message)s'))
 logger.addHandler(handler)
 
 # Logging custom Events 
