@@ -341,6 +341,18 @@ The script above will take a few minutes to create VMSS and related resources. O
 
    - Cause load on the system. After approximately 10 minutes, stop the load.
 
+   Generate load in the terminal by creating a container with "busybox" image
+   Open the bash into the container
+
+   ```
+   kubectl run -it --rm load-generator --image=busybox /bin/sh
+   ```
+   
+   Call the `azure-vote-front`
+   ```
+   while true; do wget -q -O- [SERVICE Public-IP]; done
+   ```
+
    - Observe the state of the cluster. Note the number of pods; it should have increased and should now be decreasing.
 
 
