@@ -307,7 +307,7 @@ The script above will take a few minutes to create VMSS and related resources. O
       # Verify if you image is up in the cloud.
       az acr repository list --name yrossacr2021 --output table
       # Associate the AKS cluster with the ACR repository
-      az aks update -n udacity-cluster -g acdnd-c4-project --attach-acr yrossacr2021
+      az aks update -n udacity-cluster -g cloud-demo --attach-acr yrossacr2021
       ```
 
 7. Now, deploy the images to the AKS cluster:
