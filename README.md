@@ -2,7 +2,6 @@
 The certificate of graduation confirmation can checked on the following: https://confirm.udacity.com/4CYGLKDT
 
 
-
 # Udacity - Azure Developer Nanodegree (GRADUATED)
 
 ## Nanodegree with a focus in Azure Development, infrastructure, and deployment
