@@ -307,7 +307,7 @@ The script above will take a few minutes to create VMSS and related resources. O
       # Verify if you image is up in the cloud.
       az acr repository list --name yrossacr2021 --output table
       # Associate the AKS cluster with the ACR repository
-      az aks update -n udacity-cluster -g acdnd-c4-project --attach-acr yrossacr2021
+      az aks update -n udacity-cluster -g cloud-demo --attach-acr yrossacr2021
       ```
 
 7. Now, deploy the images to the AKS cluster:
@@ -340,6 +340,18 @@ The script above will take a few minutes to create VMSS and related resources. O
    - Create an autoscaler by using the following Azure CLI command—`kubectl autoscale deployment azure-vote-front --cpu-percent=70 --min=1 --max=10`. 
 
    - Cause load on the system. After approximately 10 minutes, stop the load.
+
+   Generate load in the terminal by creating a container with "busybox" image
+   Open the bash into the container
+
+   ```
+   kubectl run -it --rm load-generator --image=busybox /bin/sh
+   ```
+   
+   Call the `azure-vote-front`
+   ```
+   while true; do wget -q -O- [SERVICE Public-IP]; done
+   ```
 
    - Observe the state of the cluster. Note the number of pods; it should have increased and should now be decreasing.
 

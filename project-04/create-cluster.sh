@@ -31,13 +31,14 @@ az aks create \
 --resource-group $resourceGroup \
 --name $clusterName \
 --node-count 1 \
---generate-ssh-keys
+--generate-ssh-keys \
+--node-vm-size Standard_D2as_v4
 
 # For Cloud Lab users
 # This command will is a substitute for "--enable-addons monitoring" option in the "az aks create"
 # Use the log analytics workspace - Resource ID
 # For Cloud Lab users, go to the existing Log Analytics workspace --> Properties --> Resource ID. Copy it and use in the command below.
-az aks enable-addons -a monitoring -n $clusterName -g $resourceGroup --workspace-resource-id "/subscriptions/7c7d6a08-6630-41e6-9087-a19703fef514/resourcegroups/cloud-demo/providers/microsoft.operationalinsights/workspaces/loganalytics-160620"
+az aks enable-addons -a monitoring -n $clusterName -g $resourceGroup --workspace-resource-id "/subscriptions/d1c30174-c872-4d8c-850f-5c8e4f716bae/resourcegroups/cloud-demo/providers/microsoft.operationalinsights/workspaces/loganalytics-160754"
 
 echo "AKS cluster created: $clusterName"
 
