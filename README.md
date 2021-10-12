@@ -1,4 +1,10 @@
-# Udacity - Azure Developer Nanodegree
+## Certificate of Graduation
+The certificate of graduation confirmation can checked on the following: https://confirm.udacity.com/4CYGLKDT
+
+
+
+# Udacity - Azure Developer Nanodegree (GRADUATED)
+
 ## Nanodegree with a focus in Azure Development, infrastructure, and deployment
 
 Learn to build cloud-based applications on Microsoft Azure
@@ -35,3 +41,6 @@ This course enables students to acquire skills which allow them to collect data 
 #### Project 04
 
 In this project, you will collect and display performance and health data about an application post-migration to Azure. First, you’ll set up Application Insights monitoring on a virtual machine scale set (VMSS) and implement monitoring in an application to collect telemetry data. Then you will create auto-scaling for a VMSS and an Azure Automation account to create a RunBook that automates the resolution of performance issues. Finally, you’ll create alerts to trigger auto-scaling on an Azure Kubernetes Service (AKS) cluster and trigger a Runbook to execute.
+
+
+
